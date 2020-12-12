@@ -20,7 +20,6 @@ int startPosD2O = 90;
 int startPosB1 = 100;
 int startPosB2 = 100;
 
-// Create a servo object 
 Servo Servo2, Servo3, Servo4, Servo5, Servo6, Servo7;
 
 void setup() { 
@@ -33,7 +32,6 @@ void setup() {
   digitalWrite(9, LOW);
   digitalWrite(10, HIGH);  
   
-  // We need to attach the servo to the used pin number 
   Servo2.attach(servoPin2);
   Servo3.attach(servoPin3);
   Servo4.attach(servoPin4);
@@ -64,17 +62,18 @@ void bird_oscillation(int start, int end) {
   digitalWrite(10, HIGH);
 }
 
-void dino_oscillation(int start, int end, Servo servo) {
-  for (long t=0; t < 3000; t++) {
-    int angle = sineBetween(start, end, t);
-    servo.write(angle);
+void dino_oscillation(Servo servo1, Servo servo2) {
+  for (long t=0; t < 4000; t++) {
+    int angle = sineBetween(70, 110, t);
+    servo1.write(angle);
+    servo2.write(angle);
     delay(1);
   }
 }
 
-void move(int start, int end, Servo servo, int delay_step, int delay_move) {
+void move(int start, int end, Servo servo, int delay_step, int delay_move, int step_size) {
   if (end > start) {
-    for (int i = start; i < end; i++) {
+    for (int i = start; i < end; i+= step_size) {
       servo.write(i);
       delay(delay_step);
     }
@@ -105,21 +104,6 @@ void bird_alarm(int pin1, int pin2, int pin3){
 
 void loop(){ 
 
-  Servo2.write(startPosB1);
-  Servo3.write(startPosB2);
-  Servo4.write(startPosD1I);
-  Servo5.write(startPosD1O);
-  Servo6.write(startPosD2I);
-  Servo7.write(startPosD2O);
-  delay(500);
-
-  //bird_oscillation(90, 130);
-  move(0, 90, Servo4, 100, 500);
-  move(0, 90, Servo5, 50, 100);
-  dino_oscillation(70, 110, Servo5);
-  while (true) {
-  }
-
   if (state == 0){
     Servo2.write(startPosB1);
     Servo3.write(startPosB2);
@@ -132,53 +116,76 @@ void loop(){
     delay(2000);
     state += 1;
   }
-
   else if (state == 1) {
-    move(0, 90, Servo4, 100, 500);
+    move(0, 90, Servo4, 100, 500, 1);
     state += 1;
   }
-  
   else if (state == 2) {
-    move(0, 90, Servo5, 50, 100);
-    dino_oscillation(0, 90, Servo5);
+    move(0, 90, Servo5, 50, 100, 2);
     state += 1;
   }
-  
   else if (state == 3) {
-    move(180, 110, Servo6, 100, 500);
+    move(180, 110, Servo6, 100, 500, 1);
     state += 1;
-  }
-
+  }  
   else if (state == 4) {
-    move(90, 110, Servo7, 100, 100);
+    dino_oscillation(Servo5, Servo7);
     state += 1;
   }
-
   else if (state == 5) {
     bird_oscillation(90, 130);
     state += 1;
   }
-
   else if (state == 6) {
-    move(110, 180, Servo6, 100, 500);
+    move(90, 0, Servo5, 100, 500, 2);
     state += 1;
   }
-
   else if (state == 7) {
-    move(90, 0, Servo5, 100, 2000);
+    move(110, 180, Servo6, 100, 2000, 1);
     state += 1;
   }
-
   else if (state == 8) {
-    move(90, 180, Servo4, 100, 2000);
+    move(90, 180, Servo4, 100, 2000, 1);
     state += 1;
   }
-    
   else if (state == 9) {
-    move(0, 180, Servo5, 100, 100);
+    move(0, 180, Servo5, 100, 100, 2);
     state += 1;
   }
-  
-
-
+  else if (state == 10) {
+    move(180, 90, Servo4, 100, 100, 1);
+    state += 1;
+  }
+  else if (state == 11) {
+    move(180, 90, Servo5, 100, 100, 2);
+    state += 1;
+  }
+  else if (state == 12) {
+    move(180, 110, Servo6, 100, 100, 1);
+    state += 1;
+  }
+  else if (state == 13) {
+    dino_oscillation(Servo5, Servo7);
+    state += 1;
+  }
+  else if (state == 14) {
+    bird_oscillation(90, 130);
+    state += 1;
+  }
+  else if (state == 15) {
+    move(90, 180, Servo5, 100, 100, 2);
+    state += 1;
+  }
+  else if (state == 16) {
+    move(110, 180, Servo6, 100, 100, 1);
+    state += 1;
+  }
+  else if (state == 17) {
+    move(90, 0, Servo4, 100, 100, 1);
+    state += 1;
+  }
+  else if (state == 18) {
+    move(180, 0, Servo5, 100, 3000, 2);
+    state = 0;
+  }
 }
