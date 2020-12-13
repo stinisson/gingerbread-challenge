@@ -30,7 +30,7 @@ void setup() {
   pinMode(10, OUTPUT);
   digitalWrite(8, LOW);
   digitalWrite(9, LOW);
-  digitalWrite(10, HIGH);  
+  digitalWrite(10, LOW);  
   
   Servo2.attach(servoPin2);
   Servo3.attach(servoPin3);
@@ -49,8 +49,7 @@ int sineBetween(int min, int max, long t){
 
 void bird_oscillation(int start, int end) {
   bird_alarm(8, 9, 10);
-  digitalWrite(10, LOW);
-  for (long t=0; t < 4300; t++) {
+  for (long t = 0; t < 4300; t++) {
     int angle = sineBetween(start, end, t);
     Servo2.write(angle);
     Servo3.write(angle);
@@ -59,11 +58,10 @@ void bird_oscillation(int start, int end) {
   delay(50);
   Servo2.write(startPosB1);
   Servo3.write(startPosB2);
-  digitalWrite(10, HIGH);
 }
 
 void dino_oscillation(Servo servo1, Servo servo2) {
-  for (long t=0; t < 4000; t++) {
+  for (long t = 0; t < 4000; t++) {
     int angle = sineBetween(70, 110, t);
     servo1.write(angle);
     servo2.write(angle);
@@ -73,7 +71,7 @@ void dino_oscillation(Servo servo1, Servo servo2) {
 
 void move(int start, int end, Servo servo, int delay_step, int delay_move, int step_size) {
   if (end > start) {
-    for (int i = start; i < end; i+= step_size) {
+    for (int i = start; i < end; i += step_size) {
       servo.write(i);
       delay(delay_step);
     }
@@ -98,8 +96,7 @@ void bird_alarm(int pin1, int pin2, int pin3){
     digitalWrite(pin2, LOW);
     digitalWrite(pin3, LOW);    
     delay(500); 
-  }
-  digitalWrite(pin3, HIGH);               
+  }             
 }
 
 void loop(){ 
