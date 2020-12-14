@@ -1,1 +1,1 @@
-# Gingerbread challenge 2020
+# The Great Christmas Gingerbread Challenge
